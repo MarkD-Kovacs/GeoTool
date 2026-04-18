@@ -1,0 +1,252 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GeoTool</title><link rel="icon" href="assets/logo.png" type="image/x-icon"><style>* {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            /*overflow: hidden;*/
+            display: flex;
+            flex-direction: row;
+            scrollbar-width: none !important;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        canvas {
+            margin: 0;
+            display: inline-block;
+        }
+        .large-text {
+            width:100%; 
+            min-height:100px; 
+            height:auto;
+            resize:none; 
+            text-align:left; 
+            background-color: rgb(240, 240, 240);
+            padding: 5px;
+            margin-right: 2px;
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 14px;
+            box-sizing: border-box;
+            display: block;
+            font-family: system-ui, -apple-system, Helvetica, sans-serif;
+            line-height: 1.2;
+            white-space: pre-wrap;
+        }
+        .hr {
+            background-color: black; 
+            width: 100%; 
+            height: 0px; 
+            border-top: 2px solid rgb(30, 30, 30);
+            margin-top: 4px;
+            margin-bottom: 4px;
+        }
+        .highlight {
+            color: rgb(214, 90, 45)
+        }
+        #toolbar {
+            background-color: rgb(140, 220, 160);
+            padding: 10px;
+            min-width: 400px;
+            max-width: 400px;
+            /*
+            width: 20vw;
+            min-width: 312px;
+            max-width: 400px;*/
+        }
+        .standard-button {
+            padding: 7px;
+            /*width: 90px;*/
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .shortcut-value-btn {
+            padding: 5px;
+            margin-right: 2px;
+            margin-bottom: 5px;
+            width: 36px;
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .my-button {
+            padding: 5px;
+            margin-right: 2px;
+            margin-bottom: 5px;
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .field {
+            /*padding: 5px;*/
+            height: 28px;
+            /*margin-right: 3px;*/
+            /*margin-bottom: 5px;*/
+            width: 120px;
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .clock-field{
+            /*padding: 5px;*/
+            height: 28px;
+            margin-left: 3px;
+            width: 100px;
+            border: 1px solid black;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .add {
+            background: lightgreen;
+        }
+        .substract {
+            background: lightcoral;
+        }
+        input {
+            width: 2rem;
+            /*margin-right: 5px;*/
+            opacity: 90%;
+            padding: 4px;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        /* Toggle Label */
+        .toggle-label {
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+            background: #ccc;
+            border-radius: 24px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* The circle inside the toggle */
+        .toggle-label::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+
+        /* Toggle ON state */
+        .toggle-input:checked + .toggle-label {
+            background: #4CAF50;
+        }
+
+        .toggle-input:checked + .toggle-label::after {
+            left: 26px;
+        }
+
+        .popup {
+            position: absolute;
+            top: 0;
+            right: 100%;
+            display: none;
+            z-index: 100;
+            margin-right: 5px;
+            width: 200px;
+
+            padding: 10px;
+            background: #f0f0f0;
+            border: 4px solid black;
+            color: rgb(212, 113, 56);
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /*.popup {
+            position: fixed;
+            top: 10px;
+            right: 405px; /* toolbar width + 5 */
+            /*transform: translate(0%, -50%);*/
+            /*display: none;
+            
+            padding: 10px;
+            background: #f0f0f0;
+            border: 4px solid black;
+            display: none;
+            z-index: 100;
+            margin-right: 5px;
+            color: rgb(212, 113, 56);
+            font-size: 24px;
+            font-weight: bold;
+        }*/
+
+        .info-popup {
+            position: fixed;
+            top: 46px;
+            right: 10px;
+            /*transform: translate(0%, -50%);*/
+            display: none;
+            
+            padding: 10px;
+            background: #f0f0f0;
+            border: 4px solid black;
+            display: none;
+            z-index: 100;
+            margin-right: 7px;
+            color: black;
+            width: 500px;
+            font-size: 16px;
+        }
+
+        .title {
+            font-size: 16px; 
+            font-weight: bold;
+            margin-right: 3px;
+        }
+
+        .vertical-space {
+            margin-top: 4px;
+            margin-bottom: 4px;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .scrollable { 
+            max-height: 100vh;
+            /*overflow-y: auto;*/ /* adds vertical scrollbar only when needed */
+
+            /* For Firefox */
+            scrollbar-width: none !important;
+
+            /* For Internet Explorer and Edge */
+            /*-ms-overflow-style: none !important;*/
+        }
+
+        /* For Chrome, Safari, and Opera */
+        .scrollable::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        h3 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }</style></head><body><div id="container"><canvas id="canvas" oncontextmenu="event.preventDefault();"></canvas></div><div id="toolbar" class="scrollable" style="display: flex; flex-direction: column;"><h3 id="geoToolLabel">GeoTool:</h3><div class="vertical-space"><span class="title" id="startLabel">Start (x, y):</span> <input id="startXField" class="field" style="width: 60px;"> <input id="startYField" class="field" style="width: 60px;"></div><div class="vertical-space"><span class="title" id="arrowLabel">End (x, y):</span> <input id="arrowXField" class="field" style="width: 60px;"> <input id="arrowYField" class="field" style="width: 60px;"></div><div class="vertical-space"><span class="title" id="distanceLabel">Length:</span> <input id="distanceField" class="field"></div><div class="vertical-space" id="angleFromOxLabel"><span class="title">Angle from Ox:</span> <input id="directionField" class="field" style="width: 60px; margin-right:1px;"><span id="directionUnit">&deg</span> <button type="button" id="clock1" type="text" class="clock-field"></button></div><div id="angle-from-reference-container"><div class="vertical-space" style="position: relative;" id="angleFromSelectedLabel"><span class="title">Angle from Selected Point:</span> <input id="directionWithRefField" class="field" style="width: 60px;margin-right:1px;"><span id="directionWithRefUnit">&deg</span> <button type="button" id="clock2" type="text" class="clock-field">trigonometric &#x21BA;</button></div></div><div class="vertical-space" style="position: relative"><span class="title">Create Objects:</span> <button id="point" class="standard-button">Point</button> <button id="line" class="standard-button">Line</button> <button id="circle" class="standard-button">Circle</button> <button id="clockwise-arc" class="standard-button">Arc &#x21BA;</button> <button id="counterclockwise-arc" class="standard-button">Arc &#x21BB;</button><div id="popup" class="popup" style="z-index:100;">popup</div></div><div class="vertical-space" style="position: relative"><span class="title">Shortcuts:</span> <button id="intersection" class="standard-button">Intersection</button> <button id="triangle" class="standard-button">Triangle</button> <button id="square" class="standard-button">Square</button> <button id="parallelogram" class="standard-button">Parallelogram</button></div><div class="hr" style="margin-bottom: 8px;"></div><div id="selectedObjectContaier" style="display:flex;flex-direction:row;"><div><h3 id="selectedObjectLabel">Selected Object:</h3><div class="vertical-space" style="margin-top:8px"><span class="title" id="labelOfSelected">Label:</span> <input name="label-field" id="label-field" class="field" style="width: 75px;" disabled="disabled"></div><div class="vertical-space" style="margin-top:8px"><button id="deleteBtn" class="standard-button" disabled="disabled">Delete Object</button></div></div><div style="flex-grow:1; margin-left: 7px;"><div class="large-text" id="selectedObjectText" style="width:100%; height:100%; text-align:left; background-color:#ddd;" disabled="disabled"></div></div></div><div class="hr" style="margin-top:8px"></div><div class="vertical-space" style="display: flex; flex-direction: row; justify-content: space-between"><span style="display: inline-flex; flex-direction: row; align-items: center;"><span class="title">Grid:</span> <input type="checkbox" id="gridToggle" checked="checked" class="toggle-input"> <label for="gridToggle" class="toggle-label"></label> </span><span style="display: inline-flex; flex-direction: row; align-items: center;"><span class="title">Magnet:</span> <input type="checkbox" id="magnetToggle" checked="checked" class="toggle-input"> <label for="magnetToggle" class="toggle-label"></label> </span><span style="display: inline-flex; flex-direction: row; align-items: center;"><span class="title">Radians:</span> <input type="checkbox" id="radiansToggle" class="toggle-input"> <label for="radiansToggle" class="toggle-label"></label></span></div><div class="vertical-space" style="margin-top: 8px; display: flex; flex-direction: row; justify-content: space-between"><span><span class="title">Zoom:</span> <input id="zoom-field" class="field" style="width: 60px;" value="1"></span><spa><span class="title">Files:</span> <button id="load-data" class="my-button">Open</button> <button id="save-data" class="my-button">Save</button> <button id="info" class="my-button" style="position: fixed; top: 10px; right: 10px; width: 40px; font-weight: bold; padding: 8px;">Info</button><div id="info-popup" class="info-popup"><div style="display: flex; flex-direction: row; align-items: center; justify-content:center; gap:15px;"><img src="assets/logo.png" alt="logo" width="160" height="160"><h1>GeoTool</h1></div><p>This app combines the functionality of a ruler, protractor and compass into one tool, called <b>GeoTool</b> (the blue dashed line). It is used both for drawing and for measuring.</p><p>The GeoTool will move according to the input fields and the fields will update in real-time when the GeoTool is moved to display precise measurements.</p><p><b>Double-click</b> anywhere to draw a point.</p><p><b>Drag and drop</b> objects to move them around. Click and drag from an empty spot to move the canvas.</p><p>Each input field in the toolbar is a tiny <b>calculator</b>. Type in any valid math expression and press "Enter" to calculate the result.<br>It supports the following symbols and functions:</p><ul><li>"pi" and "e" as mathematical constants</li><li>"^" for exponentiation: x^y</li><li>"sqrt" function for square roots: sqrt(x).</li><li>"log" function: log(x, base), where the second argument is the base (by default it is e)</li></ul><p></p></div></spa></div><div class="hr"></div><div class="vertical-space" style="display:flex; flex-direction:row; align-items: baseline; justify-content: space-between;"><span class="title">Calculator:</span> <input id="calculator-input" class="field" style="width: 160px"> <span>=</span> <input id="calculator-output" class="field" style="width: 100px" readonly="readonly"></div><div class="title vertical-space">Notes:</div><div><textarea id="notes" class="large-text" style="text-align:left;"></textarea></div></div><script defer="defer" src="731.bundle.js"></script><script defer="defer" src="index.bundle.js"></script></body></html>
